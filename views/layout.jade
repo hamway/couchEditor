@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.1.min.js')
+    script(type='text/javascript', src='/javascripts/watcher.js')
+    link(rel='stylesheet', href='/codemirror/lib/codemirror.css')
+    link(rel='stylesheet', href='/codemirror/theme/ambiance.css')
+    script(src='/codemirror/lib/codemirror.js')
+    script(src='/codemirror/mode/javascript/javascript.js')
+    script(src='http://jsonlint.com/c/js/jsl.format.js')
+  body
+    block content

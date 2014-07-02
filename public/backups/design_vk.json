@@ -1,0 +1,1 @@
+{"_id":"_design/vk","_rev":"1-6eb3f57ba834dc975e6c470704ee3eee","language":"javascript","views":{"shows_by_time":{"map":"function(doc){ \n\tif(doc.type == 'show' && doc.time && doc.source == 'vk' && doc.isWorker == 1) { \n\t\temit(doc.time, doc); \n\t} \n}"}}}

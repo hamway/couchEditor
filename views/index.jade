@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p View:&nbsp;
+    select(onchange='getdoc(this.value)')
+      each view, i in all
+        option(value=view) #{view}
+  div
+    textarea#editor
+
