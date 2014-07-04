@@ -104,9 +104,13 @@ function updateFile(doc,data) {
         var rev = doc[key].value.rev;
         var bkpfile = './public/backups/views/' + convertName(view);
 
-        if (data[view] != rev || fs.existsSync(bkpfile)) {
+        utils.log(bkpfile);
+        utils.log(data[view] != rev || !fs.existsSync(bkpfile));
+
+        if (data[view] != rev || !fs.existsSync(bkpfile)) {
             db.get(view, function(err, newdoc) {
-                fs.writeFileSync(bkpfile, newdoc);
+                var writeFile = './public/backups/views/' + convertName(newdoc.id);
+                fs.writeFileSync(writeFile, newdoc);
             });
         }
     }

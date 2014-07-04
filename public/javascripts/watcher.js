@@ -12,9 +12,9 @@ function getdoc(value) {
 }
 
 function backup() {
-    /*$.post('/docs/backup', function(code,status,resp) {
+    $.post('/docs/backup', function(code,status,resp) {
         //alert('Docs Backuped!!!');
-    });*/
+    });
 }
 
 function initeditor(block){
