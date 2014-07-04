@@ -53,7 +53,7 @@ router.post('/docs/backup', function(req,res) {
         var exists = fs.existsSync(filename);
 
         if (!exists) {
-            writeToEmpty(doc);
+            writeToEmpty(doc, filename);
             res.send(200);
         } else {
             fs.readFile(filename,function(err,data) {
@@ -86,16 +86,20 @@ function convertName(name, ext) {
     }
 }
 
-function writeToEmpty(doc) {
+function writeToEmpty(doc, filename) {
     var data = {};
     for (var key in doc) {
         var view = convertName(doc[key].key, false);
         var rev = doc[key].value.rev;
 
         data[view] = rev;
+        db.get(view, function(err, newdoc) {
+            var writeFile = './public/backups/views/' + convertName(newdoc.id);
+            fs.writeFileSync(writeFile, newdoc);
+        });
     }
 
-    fs.writeFileSync(filename,JSON.stringify(data));
+    fs.writeFileSync(filename,JSON.stringify(data),['0644', 'w+']);
 }
 
 function updateFile(doc,data) {
