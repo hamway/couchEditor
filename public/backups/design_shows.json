@@ -1,1 +1,0 @@
-{"_id":"_design/shows","_rev":"7-2bbe98371defceed8527925b11cd6960","language":"javascript","views":{"all":{"map":"function(doc) {if(doc.type == 'show') {emit(doc.id, doc);}}"},"search_by_time":{"map":"function(doc){ if(doc.type == 'show' && doc.time) { emit(doc.time, doc); } }"}}}

@@ -11,6 +11,12 @@ function getdoc(value) {
     });
 }
 
+function backup() {
+    /*$.post('/docs/backup', function(code,status,resp) {
+        //alert('Docs Backuped!!!');
+    });*/
+}
+
 function initeditor(block){
     editor = CodeMirror.fromTextArea(document.getElementById(block), {
         mode: { name: "application/json", json: true},

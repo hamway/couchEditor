@@ -1,12 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  p View:&nbsp;
-    select(onchange='getdoc(this.value)')
-      each view, i in all
-        option(value=view) #{view}
-  div
-    textarea#editor
-
+	h1= title
+	p Welcome to #{title}
+	div
+		p View:&nbsp;
+			select(onchange='getdoc(this.value)')
+				option(value=0) ---Selected---
+				each view, i in all
+					option(value=view) #{view}
+	div
+		textarea#editor
+	div
+		label
+			input(type='checkbox', name='update')
+			span Backup All
+		button(onclick='backup()', style='margin:0px 5px;') Request

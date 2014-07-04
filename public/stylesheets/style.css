@@ -10,3 +10,9 @@ a {
 .CodeMirror {
     height: 600px;
 }
+
+.button{
+    border: 1px solid #00B7FF;
+    padding: 5px 3px 5px 3px;
+    margin: 0px 5px;
+}
