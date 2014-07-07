@@ -12,9 +12,24 @@ function getdoc(value) {
 }
 
 function backup() {
-    $.post('/docs/backup', function(code,status,resp) {
-        //alert('Docs Backuped!!!');
-    });
+    if ($('input[name=backup]').is(':checked')) {
+        $.post('/docs/backup', function(code,status,resp) {
+            alert('Docs Backuped!!!');
+         });
+    } else {
+        alert('Not supported. Need checked all');
+    }
+
+}
+
+function restore() {
+    if ($('input[name=restore]').is(':checked')) {
+        $.post('/docs/restore', {database: $('input[name=database]').val()}, function (code, status, resp) {
+            //alert('Docs Backuped!!!');
+        });
+    } else {
+        alert('Not supported. Need checked all');
+    }
 }
 
 function initeditor(block){

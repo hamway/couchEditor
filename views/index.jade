@@ -13,6 +13,15 @@ block content
 		textarea#editor
 	div
 		label
-			input(type='checkbox', name='update')
+			input(type='checkbox', name='backup')
 			span Backup All
 		button(onclick='backup()', style='margin:0px 5px;') Request
+
+
+	div(style='color:red')
+		label
+			input(type='checkbox', name='restore')
+			span Restore All to
+		input(type='text', name='database')
+
+		button(onclick='restore()', style='margin:0px 5px;') Request

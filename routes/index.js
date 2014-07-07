@@ -3,6 +3,7 @@ var router = express.Router();
 
 var cradle = require('cradle');
 var db = new(cradle.Connection)('http://stat.selfhander.com', 5984, {auth: {username: 'admin', password: 'selfhander2014'}}).database('stats');
+
 var fs = require('fs');
 var utils = require('util');
 
@@ -29,7 +30,7 @@ router.get('/docs', function(req,res) {
 
     db.get(view, function(err,doc) {
         var filename = convertName(view);
-        fs.readdir('./public/backups/db', function(err, files) {
+        fs.readdir('./public/backups/views', function(err, files) {
             if (err) throw err;
             var exist = false;
             files.forEach(function(file) {
@@ -53,22 +54,37 @@ router.post('/docs/backup', function(req,res) {
         var exists = fs.existsSync(filename);
 
         if (!exists) {
-            writeToEmpty(doc);
+            writeToEmpty(filename, doc);
             res.send(200);
         } else {
             fs.readFile(filename,function(err,data) {
                 if(err) throw err;
-                utils.log(data);
                 if (data.length == 0) {
-                    writeToEmpty(doc);
+                    writeToEmpty(filename,doc);
                     res.send(200);
                 } else {
-                    updateFile(doc,data);
+                    updateFile(filename,doc,data);
                     res.send(200, 'Update');
                 }
             });
         }
     });
+});
+
+router.post('/docs/restore', function(req,res) {
+    if (req.body.database) {
+        var newdb = new (cradle.Connection)('http://stat.selfhander.com', 5984, {auth: {username: 'admin', password: 'selfhander2014'}}).database(req.body.database);
+        fs.readdir('./public/backups/views', function(err, files) {
+            console.log(files);
+            for(var key in files) {
+                var file = files[key];
+                console.log(file);
+            }
+        });
+        res.send(200);
+    } else {
+        res.send(404);
+    }
 });
 
 module.exports = router;
@@ -86,7 +102,7 @@ function convertName(name, ext) {
     }
 }
 
-function writeToEmpty(doc) {
+function writeToEmpty(filename, doc) {
     var data = {};
     for (var key in doc) {
         var view = convertName(doc[key].key, false);
@@ -95,17 +111,14 @@ function writeToEmpty(doc) {
         data[view] = rev;
     }
 
-    fs.writeFileSync(filename,JSON.stringify(data));
+    fs.writeFileSync(filename,doc);
 }
 
-function updateFile(doc,data) {
+function updateFile(filename, doc,data) {
     for (var key in doc) {
         var view = convertName(doc[key].key, false);
         var rev = doc[key].value.rev;
         var bkpfile = './public/backups/views/' + convertName(view);
-
-        utils.log(bkpfile);
-        utils.log(data[view] != rev || !fs.existsSync(bkpfile));
 
         if (data[view] != rev || !fs.existsSync(bkpfile)) {
             db.get(view, function(err, newdoc) {
@@ -114,4 +127,6 @@ function updateFile(doc,data) {
             });
         }
     }
+
+    fs.writeFileSync(filename,doc);
 }
